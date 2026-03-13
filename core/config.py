@@ -61,8 +61,7 @@ class BasicConfig(BaseModel):
     linuxdo_userinfo_url: str = Field(default="https://connect.linux.do/api/user", description="Linux DO OAuth 用户信息地址")
     linuxdo_redirect_uri: str = Field(default="", description="Linux DO OAuth 回调地址（留空自动推断）")
     linuxdo_scope: str = Field(default="openid profile email", description="Linux DO OAuth Scope")
-    # DEPRECATED: 代理配置已迁移到节点管理页面的代理控制面板
-    proxy_for_auth: str = Field(default="", description="[已弃用] 账户操作代理地址，请使用节点管理页面配置")
+    proxy_for_auth: str = Field(default="", description="账户操作代理地址（Exa 注册/刷新/浏览器自检）")
     proxy_for_chat: str = Field(default="", description="[已弃用] 对话操作代理地址，请使用节点管理页面配置")
     duckmail_base_url: str = Field(default="https://api.duckmail.sbs", description="DuckMail API地址")
     duckmail_api_key: str = Field(default="", description="DuckMail API key")
