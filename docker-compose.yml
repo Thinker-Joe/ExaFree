@@ -1,4 +1,21 @@
 services:
+  exa-proxy-bridge:
+    image: ginuerzh/gost@sha256:1164471f53b080c5c220e5af8f62a0bb80b914d5012ca7ad1173c79277d4c2eb
+    container_name: exa-proxy-bridge
+    profiles:
+      - proxy-bridge
+    ports:
+      - "${EXA_PROXY_BRIDGE_HOST_PORT:-17890}:${EXA_PROXY_BRIDGE_LISTEN_PORT:-17890}"
+    command:
+      - "-L=http://0.0.0.0:${EXA_PROXY_BRIDGE_LISTEN_PORT:-17890}"
+      - "-F=${EXA_PROXY_BRIDGE_UPSTREAM:-socks5://127.0.0.1:9}"
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
   exa-api:
     build:
       context: .
@@ -25,4 +42,3 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-

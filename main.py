@@ -2047,8 +2047,8 @@ async def admin_get_settings(request: Request):
     return {
         "basic": {
             "base_url": config.basic.base_url,
-            "proxy_for_auth": "",
-            "proxy_for_chat": "",
+            "proxy_for_auth": config.basic.proxy_for_auth,
+            "proxy_for_chat": config.basic.proxy_for_chat,
             "linuxdo_oauth_enabled": bool(getattr(config.basic, "linuxdo_oauth_enabled", False)),
             "linuxdo_client_id": str(getattr(config.basic, "linuxdo_client_id", "") or ""),
             "linuxdo_client_secret": str(getattr(config.basic, "linuxdo_client_secret", "") or ""),
@@ -2182,13 +2182,15 @@ async def admin_update_settings(request: Request, new_settings: dict = Body(...)
         basic.setdefault("register_default_count", config.basic.register_default_count)
         basic.setdefault("register_domain", config.basic.register_domain)
         basic.setdefault("image_expire_hours", -1)
+        basic.setdefault("proxy_for_auth", config.basic.proxy_for_auth)
+        basic.setdefault("proxy_for_chat", config.basic.proxy_for_chat)
         basic.pop("api_key", None)
-        basic["proxy_for_auth"] = ""
-        basic["proxy_for_chat"] = ""
         basic["refresh_window_hours"] = 0
         basic["image_expire_hours"] = -1
         if not isinstance(basic.get("register_domain"), str):
             basic["register_domain"] = ""
+        basic["proxy_for_auth"] = str(basic.get("proxy_for_auth") or "").strip()
+        basic["proxy_for_chat"] = str(basic.get("proxy_for_chat") or "").strip()
         basic["linuxdo_oauth_enabled"] = bool(basic.get("linuxdo_oauth_enabled", False))
         basic["linuxdo_client_id"] = str(basic.get("linuxdo_client_id") or "").strip()
         basic["linuxdo_client_secret"] = str(basic.get("linuxdo_client_secret") or "").strip()

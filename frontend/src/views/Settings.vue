@@ -142,6 +142,19 @@
                   启用邮箱代理（使用账户操作代理）
                 </Checkbox>
                 <div class="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+                  <span>Exa 注册代理</span>
+                  <HelpTip text="用于 Exa 注册、刷新和浏览器自检。推荐填写浏览器可直连的 HTTP 代理。若使用 docker-compose 中的 exa-proxy-bridge，请填写 http://exa-proxy-bridge:17890；若直接在宿主机运行脚本，请填写 http://127.0.0.1:17890。" />
+                </div>
+                <input
+                  v-model="localSettings.basic.proxy_for_auth"
+                  type="text"
+                  class="w-full rounded-2xl border border-input bg-background px-3 py-2 text-sm"
+                  placeholder="例如：http://exa-proxy-bridge:17890"
+                />
+                <p class="text-[11px] text-muted-foreground">
+                  Docker 内推荐填 `http://exa-proxy-bridge:17890`，宿主机脚本推荐填 `http://127.0.0.1:17890`。
+                </p>
+                <div class="flex items-center justify-between gap-2 text-xs text-muted-foreground">
                   <span>Exa 浏览器模式</span>
                   <HelpTip text="默认使用无头浏览器。若注册日志提示 Vercel Security Checkpoint / Code 21，请切换为有头浏览器后重试。" />
                 </div>
@@ -502,6 +515,9 @@ watch(settings, (value) => {
     : 1
   next.basic.register_domain = typeof next.basic.register_domain === 'string'
     ? next.basic.register_domain
+    : ''
+  next.basic.proxy_for_auth = typeof next.basic.proxy_for_auth === 'string'
+    ? next.basic.proxy_for_auth
     : ''
   next.basic.exa_redeem_coupon_enabled = next.basic.exa_redeem_coupon_enabled ?? false
   next.basic.exa_coupon_code = typeof next.basic.exa_coupon_code === 'string'
