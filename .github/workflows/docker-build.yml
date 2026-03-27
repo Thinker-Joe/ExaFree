@@ -37,6 +37,7 @@ jobs:
           docker run -d --name exafree-smoke -p 7860:7860 exafree-smoke:latest
           for i in $(seq 1 30); do
             if curl -fsS http://127.0.0.1:7860/health > /dev/null; then
+              docker exec exafree-smoke python -c "import dotenv, sys; print(sys.executable)"
               curl -fsS http://127.0.0.1:7860/health
               curl -fsS http://127.0.0.1:7860/ > /dev/null
               exit 0

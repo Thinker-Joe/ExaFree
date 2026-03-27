@@ -17,6 +17,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PORT=7860 \
     CONFIG_FILE=/app/data/settings.yaml \
     ADMIN_PANEL_STATIC_DIR=/app/static \
+    VIRTUAL_ENV=/app/.venv \
     PATH=/app/.venv/bin:$PATH
 
 WORKDIR /app
@@ -58,6 +59,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project \
+    && /app/.venv/bin/python -c "import dotenv" \
     && uv run playwright install --with-deps chromium
 
 COPY main.py ./
@@ -69,4 +71,4 @@ EXPOSE 7860
 
 VOLUME ["/app/data"]
 
-CMD ["python", "main.py"]
+CMD ["/app/.venv/bin/python", "main.py"]
